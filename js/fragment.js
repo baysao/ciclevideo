@@ -37,7 +37,7 @@
   // Helper function to load jsonp data
   var load_jsonp = function(url, callback, url_parser) {
     var script = doc.createElement('script');
-    script.src = url + (parser.search == '' ? '?' : '&') +
+    script.src = url + (url_parser.search == '' ? '?' : '&') +
       fragment.jsonp + '=JSONPCallback';
 
     win.JSONPCallback = function(data) {
