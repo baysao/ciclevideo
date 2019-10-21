@@ -7,8 +7,10 @@
     if (typeof json === "undefined") {
       return html;
     }
-
-    if (typeof win.Mustache !== "undefined" &&
+    if (typeof win.doT !== "undefined" &&
+        typeof win.doT.template !== "undefined") {
+	return doT.template(html, undefined, {})(json);
+    } else if (typeof win.Mustache !== "undefined" &&
         typeof win.Mustache.render !== "undefined") {
       return Mustache.render(html, json);
     } else if (typeof win.Handlebars !== "undefined" &&
