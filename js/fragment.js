@@ -1,5 +1,4 @@
-;(function(win, doc) {
-
+(function(win, doc) {
   // Gets either a string, which it will just return, or a {html, json} pair which
   // it will try to render with Mustache, Handlebars and Underscore.
   // If that fails, it just returns the html.
@@ -7,18 +6,26 @@
     if (typeof json === "undefined") {
       return html;
     }
-    if (typeof win.doT !== "undefined" &&
-        typeof win.doT.template !== "undefined") {
-	return doT.template(html, undefined, {})(json);
-    } else if (typeof win.Mustache !== "undefined" &&
-        typeof win.Mustache.render !== "undefined") {
+    if (
+      typeof win.doT !== "undefined" &&
+      typeof win.doT.template !== "undefined"
+    ) {
+      return doT.template(html, undefined, {})(json);
+    } else if (
+      typeof win.Mustache !== "undefined" &&
+      typeof win.Mustache.render !== "undefined"
+    ) {
       return Mustache.render(html, json);
-    } else if (typeof win.Handlebars !== "undefined" &&
-               typeof win.Handlebars.compile !== "undefined") {
+    } else if (
+      typeof win.Handlebars !== "undefined" &&
+      typeof win.Handlebars.compile !== "undefined"
+    ) {
       return Handlebars.compile(html)(json);
-    } else if (typeof win._ !== "undefined" &&
-               typeof win._.template !== "undefined") {
-      return output = _.template(html, json);
+    } else if (
+      typeof win._ !== "undefined" &&
+      typeof win._.template !== "undefined"
+    ) {
+      return (output = _.template(html, json));
     }
 
     return html;
@@ -27,21 +34,24 @@
   // Helper function to load ajax data
   var load_xhr = function(url, callback) {
     var request = new XMLHttpRequest();
-    request.open('GET', url);
+    request.open("GET", url);
     request.send();
     request.onload = function() {
-      callback(this.response);
+	console.log(this.response);
+	callback(this.response);
     };
   };
 
   // Helper function to load jsonp data
   var load_jsonp = function(url, callback, url_parser) {
-    var script = doc.createElement('script');
-    script.src = url + (url_parser.search == '' ? '?' : '&') +
-      fragment.jsonp + '=JSONPCallback';
+    var script = doc.createElement("script");
+    script.src =
+      url.replace(".html", ".js") +
+      (url_parser.search == "" ? "?" : "&") +
+      fragment.jsonp +
+      "=JSONPCallback";
 
-      win.JSONPCallback = function(data) {
-      // The callback function expects a string
+    win.JSONPCallback = function(data) {
       callback(JSON.stringify(data));
       win.JSONPCallback = null;
       // Clean up DOM by removing the JSONP script element
@@ -50,23 +60,23 @@
         parent.removeChild(script);
       }
       script = null;
-    }
-    doc.getElementsByTagName('head')[0].appendChild(script);
+    };
+    doc.getElementsByTagName("head")[0].appendChild(script);
   };
 
   var load = function(url, callback) {
     // We'll need something that can easily parse urls
-    var url_parser = doc.createElement('a');
+    var url_parser = doc.createElement("a");
     url_parser.href = url;
 
     // If the resource is located at the same hostname, assume ajax
-    if(url_parser.hostname == win.location.hostname) {
+    if (url_parser.hostname == win.location.hostname) {
       load_xhr(url, callback);
     }
     // If the resource is located at a different hostname, assume jsonp
     // else {
     //   load_jsonp(url, callback, url_parser);
-  //}
+    // }
   };
 
   var render_template = function(element, html, json) {
@@ -97,12 +107,12 @@
 
   // Handle an individual fragment
   var render_fragment = function(fragment_type, element) {
-    var html_url = element.getAttribute('data-'+fragment.html);
-    var json_url = element.getAttribute('data-'+fragment.json);
-    var media = element.getAttribute('data-fragment-media');
+    var html_url = element.getAttribute("data-" + fragment.html);
+    var json_url = element.getAttribute("data-" + fragment.json);
+    var media = element.getAttribute("data-fragment-media");
 
     // Don't load anything if the media query doesn't match
-    if ( media && win.matchMedia && !win.matchMedia(media).matches ) return;
+    if (media && win.matchMedia && !win.matchMedia(media).matches) return;
 
     // Update the num_fragments and deligate rendering to a submethod
     var resource_loaded = function(render_handler) {
@@ -118,13 +128,11 @@
           resource_loaded(render_template.bind(this, element, html, json));
         });
       });
-    }
-    else if (fragment_type.html) {
+    } else if (fragment_type.html) {
       load(html_url, function(html) {
         resource_loaded(render_html.bind(this, element, html));
       });
-    }
-    else if (fragment_type.json) {
+    } else if (fragment_type.json) {
       load(json_url, function(json) {
         resource_loaded(render_json.bind(this, element, json));
       });
@@ -138,14 +146,29 @@
 
     // Scope contains information for recursively rendering fragments
     var scope = { parent: parent, context: context };
-    var fragments = parent.querySelectorAll('[data-'+fragment.html+'][data-'+fragment.json+']');
-    Array.prototype.forEach.call(fragments, render_fragment.bind(scope, { json: true, html: true }));
+    var fragments = parent.querySelectorAll(
+      "[data-" + fragment.html + "][data-" + fragment.json + "]"
+    );
+    Array.prototype.forEach.call(
+      fragments,
+      render_fragment.bind(scope, { json: true, html: true })
+    );
 
-    var fragments = parent.querySelectorAll('[data-'+fragment.html+']:not([data-'+fragment.json+'])');
-    Array.prototype.forEach.call(fragments, render_fragment.bind(scope, { json: false, html: true }));
+    var fragments = parent.querySelectorAll(
+      "[data-" + fragment.html + "]:not([data-" + fragment.json + "])"
+    );
+    Array.prototype.forEach.call(
+      fragments,
+      render_fragment.bind(scope, { json: false, html: true })
+    );
 
-    var fragments = parent.querySelectorAll('[data-'+fragment.json+']:not([data-'+fragment.html+'])');
-    Array.prototype.forEach.call(fragments, render_fragment.bind(scope, { json: true, html: false }));
+    var fragments = parent.querySelectorAll(
+      "[data-" + fragment.json + "]:not([data-" + fragment.html + "])"
+    );
+    Array.prototype.forEach.call(
+      fragments,
+      render_fragment.bind(scope, { json: true, html: false })
+    );
   };
 
   var extend = function(obj, defaults) {
@@ -173,23 +196,22 @@
 
   // Extend fragment with defaults
   var fragment = extend(win.fragment, {
-    html: 'fragment',
-    json: 'fragment-json',
-    jsonp: 'callback',
+    html: "fragment",
+    json: "fragment-json",
+    jsonp: "callback",
     manual: false,
     render: render,
     evaluate: evaluate,
-    ready: function(){}
+    ready: function() {}
   });
 
   // Autoload
   if (!fragment.manual) {
-    doc.addEventListener('DOMContentLoaded', function() {
+    doc.addEventListener("DOMContentLoaded", function() {
       fragment.evaluate();
     });
   }
 
   // Just overwrite any existing "fragment" property
   win.fragment = fragment;
-
 })(window, window.document);
