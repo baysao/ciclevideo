@@ -40,7 +40,7 @@
     script.src = url + (url_parser.search == '' ? '?' : '&') +
       fragment.jsonp + '=JSONPCallback';
 
-    win.JSONPCallback = function(data) {
+      win.JSONPCallback = function(data) {
       // The callback function expects a string
       callback(JSON.stringify(data));
       win.JSONPCallback = null;
@@ -60,13 +60,13 @@
     url_parser.href = url;
 
     // If the resource is located at the same hostname, assume ajax
-    if (url_parser.hostname == win.location.hostname) {
+    if(url_parser.hostname == win.location.hostname) {
       load_xhr(url, callback);
     }
     // If the resource is located at a different hostname, assume jsonp
-    else {
-      load_jsonp(url, callback, url_parser);
-    }
+    // else {
+    //   load_jsonp(url, callback, url_parser);
+  //}
   };
 
   var render_template = function(element, html, json) {
