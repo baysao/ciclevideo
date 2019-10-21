@@ -37,7 +37,6 @@
     request.open("GET", url);
     request.send();
     request.onload = function() {
-	console.log(this.response);
 	callback(this.response);
     };
   };
@@ -46,13 +45,13 @@
   var load_jsonp = function(url, callback, url_parser) {
     var script = doc.createElement("script");
     script.src =
-      url.replace(".html", ".js") +
+	  url.replace('.html', '.js') +
       (url_parser.search == "" ? "?" : "&") +
       fragment.jsonp +
       "=JSONPCallback";
 
-    win.JSONPCallback = function(data) {
-      callback(JSON.stringify(data));
+      win.JSONPCallback = function(data) {
+//      callback(JSON.stringify(data));
       win.JSONPCallback = null;
       // Clean up DOM by removing the JSONP script element
       var parent = script.parentNode;
@@ -70,9 +69,9 @@
     url_parser.href = url;
 
     // If the resource is located at the same hostname, assume ajax
-    if (url_parser.hostname == win.location.hostname) {
+//    if (false && url_parser.hostname == win.location.hostname) {
       load_xhr(url, callback);
-    }
+  //  }
     // If the resource is located at a different hostname, assume jsonp
     // else {
     //   load_jsonp(url, callback, url_parser);
