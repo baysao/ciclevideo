@@ -34,14 +34,16 @@ function waitForElementToDisplay(selector, time, callback) {
 	  ljs.load([
 	      "js/vendor/player/johndyer-mediaelement-89793bc/build/mediaelement-and-player.min.js"
 	  ]);
-	  waitForElementToDisplay("#video-item", 100, function(){
+	  waitForElementToDisplay("#video-responsive", 100, function(){
 
-	      var _el = document.getElementById("video-item");
+	      var _el = document.getElementById("video-responsive");
+	      console.log(_el);
 	      if(_el) {
 	  	  var _video_src_type =
 		      _el.getAttribute("video-src-type");
 		  var _video_src_id =
 		      _el.getAttribute("video-src-id");
+
 		  switch(_video_src_type) {
 		  case 'thanhnien':
 		      nanoajax.ajax(
@@ -49,8 +51,21 @@ function waitForElementToDisplay(selector, time, callback) {
 			  function(_code, _resp){
 			      var m =
    				  _resp.match(/(\<video.+video\>)/);
-     			      _el.parentNode.innerHTML
-				  = m[1];
+			      var _v1 = createElementFromHTML(m[1]);
+			      console.log(_v);
+			      var _v = document.createElement('video');
+
+
+			      _v1.setAttribute("style", "width:100%;height:100%;");
+			      _v1.setAttribute("width", "100%");
+			      _v1.setAttribute("height", "100%");
+			      // _v.setAttribute("controls", "controls");
+			      // _v.setAttribute("poster",
+			      // 		      _v1.getAttribute("poster"));
+			      // _v.setAttribute("src", _v1.getAttribute("src"));
+			      // console.log(_v);
+			      _el.appendChild(_v1);
+			      //_el.classList.add("video-responsive");
 			  });
 		      break;
 		  }
