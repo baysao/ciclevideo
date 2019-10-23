@@ -10,6 +10,17 @@
       document.body.appendChild(script_tag);
   }
 
+function waitForElementToDisplay(selector, time, callback) {
+    if(document.querySelector(selector)!=null) {
+	callback && callback();
+        }
+        else {
+            setTimeout(function() {
+                waitForElementToDisplay(selector, time, callback);
+            }, time);
+        }
+    }
+
   routie({
       'watch/:id': function(id) {
 	  console.log(id);
@@ -23,7 +34,8 @@
 	  ljs.load([
 	      "js/vendor/player/johndyer-mediaelement-89793bc/build/mediaelement-and-player.min.js"
 	  ]);
-	  setTimeout(function(){
+	  waitForElementToDisplay("#video-item", 100, function(){
+
 	      var _el = document.getElementById("video-item");
 	      if(_el) {
 	  	  var _video_src_type =
@@ -43,7 +55,7 @@
 		      break;
 		  }
 	      }
-	  }, 1000);
+	  });
 
       },
       '*': function() {
