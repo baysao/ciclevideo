@@ -1,0 +1,105 @@
+{
+  "groups": [
+    {
+      "headers": [
+        {
+          "long": "Featured Videos",
+          "short": "Featured",
+          "link": "index.html#"
+        },
+        {
+          "long": "New Videos",
+          "short": "New Videos",
+          "link": "index.html#"
+        },
+        {
+          "long": "Recommended For You",
+          "short": "Recommended",
+          "link": "index.html#"
+        }
+      ],
+      "data": [
+        {
+          "title": "Man's Sky: 21 Minutes of New Gameplay - IGN First",
+          "thumbnail": "images/video1-1.png",
+          "length": "3:50",
+          "link": "#watch/single-video-tabs.html",
+          "stats": {
+            "views": "27,548",
+            "viewed": "78"
+          }
+        },
+        {
+          "title": "Man's Sky: 21 Minutes of New Gameplay - IGN First",
+          "thumbnail": "images/video1-1.png",
+          "length": "3:50",
+          "link": "single-video-tabs.html",
+          "stats": {
+            "views": "27,548",
+            "viewed": "78"
+          }
+        },
+        {
+          "title": "Man's Sky: 21 Minutes of New Gameplay - IGN First",
+          "thumbnail": "images/video1-1.png",
+          "length": "3:50",
+          "link": "single-video-tabs.html",
+          "stats": {
+            "views": "27,548",
+            "viewed": "78"
+          }
+        },
+        {
+          "title": "Man's Sky: 21 Minutes of New Gameplay - IGN First",
+          "thumbnail": "images/video1-1.png",
+          "length": "3:50",
+          "link": "single-video-tabs.html",
+          "stats": {
+            "views": "27,548",
+            "viewed": "78"
+          }
+        },
+        {
+          "title": "Man's Sky: 21 Minutes of New Gameplay - IGN First",
+          "thumbnail": "images/video1-1.png",
+          "length": "3:50",
+          "link": "single-video-tabs.html",
+          "stats": {
+            "views": "27,548",
+            "viewed": "78"
+          }
+        },
+        {
+          "title": "Man's Sky: 21 Minutes of New Gameplay - IGN First",
+          "thumbnail": "images/video1-1.png",
+          "length": "3:50",
+          "link": "single-video-tabs.html",
+          "stats": {
+            "views": "27,548",
+            "viewed": "78"
+          }
+        },
+        {
+          "title": "Man's Sky: 21 Minutes of New Gameplay - IGN First",
+          "thumbnail": "images/video1-1.png",
+          "length": "3:50",
+          "link": "single-video-tabs.html",
+          "stats": {
+            "views": "27,548",
+            "viewed": "78"
+          }
+        },
+        {
+          "title": "Man's Sky: 21 Minutes of New Gameplay - IGN First",
+          "thumbnail": "images/video1-1.png",
+          "length": "3:50",
+          "link": "single-video-tabs.html",
+          "stats": {
+            "views": "27,548",
+            "viewed": "78"
+          }
+        }
+      ]
+    }
+  ]
+}
