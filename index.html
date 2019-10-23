@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+     <!-- <base href='https://cdn.jsdelivr.net/gh/baysao/ciclevideo@b625f7a/'/> -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,43 +12,51 @@
 
     <title>Circle Video | Home Page</title>
 
+    <noscript id='deferred-styles'>
     <!-- Bootstrap core CSS -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
+        <!-- player -->
+    <link rel="stylesheet" href="js/vendor/player/johndyer-mediaelement-89793bc/build/mediaelementplayer.min.css" />
+
+    <!-- Theme CSS -->
+    <link href="js/vendor/magnificPopup/dist/magnific-popup.css"
+	  rel="stylesheet">
+    
     <!-- Theme CSS -->
     <link href="css/style.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
     <link href="css/font-circle-video.css" rel="stylesheet">
 
+    
     <!-- font-family: 'Hind', sans-serif; -->
-    <link href='https://fonts.googleapis.com/css?family=Hind:400,300,500,600,700|Hind+Guntur:300,400,500,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Hind:400,300,500,600,700|Hind+Guntur:300,400,500,700'
+	  rel='stylesheet' type='text/css'>
+    </noscript>
 </head>
 
 <body class="light">
 <!-- logo, menu, search, avatar -->
-<div class="container-fluid" data-fragment="template/row-logo.html">
-    {}
+<div class="container-fluid" data-fragment="template/row-logo.html" data-fragment-json="data/row-logo.json">
 </div>
 <!-- /logo -->
 
-<div class="mobile-menu" data-fragment="template/row-mobile-menu.html">
-{}
-</div>
+<div class="mobile-menu" data-fragment="template/row-mobile-menu.html"
+     data-fragment-json="data/row-mobile-menu.json"> 
+</div> 
 
 <!-- goto -->
-<div class="container-fluid" data-fragment="template/row-goto.html">
-    {}
-</div>
+<div class="container-fluid" data-fragment="template/row-goto.html"  data-fragment-json="data/row-goto.json"> 
+</div> 
 <!-- /goto -->
-
-<div class="content-wrapper" data-fragment="template/content-home.html">
-{}
-</div>
+ 
+<div class="content-wrapper" id="content-wrapper">
+     <!-- data-fragment="template/index.html" data-fragment-json="data/index.json">  -->
+</div> 
 
 <!-- footer -->
-<footer data-fragment="template/footer.html">{}
+<footer data-fragment="template/footer.html" data-fragment-json="data/footer.json">
 </footer>
-<!-- /footer -->
 
 
 
@@ -57,12 +66,84 @@
 <script src="js/jquery.min.js"></script>
 
 <script src="bootstrap/js/bootstrap.min.js"></script>
-
+<script src="js/nanoajax.min.js"></script>
+<script src="js/l.min.js"></script>
 <script src="js/doT.min.js"></script>
+<script src="js/routie.min.js"></script>
 <script src="js/fragment.js"></script>
 
 
-<script src="js/custom.js"></script>
 
+
+<script type='text/javascript'>
+  function createElementFromHTML(htmlString) {
+      var div = document.createElement('div');
+      div.innerHTML = htmlString.trim();
+      return div.firstChild; 
+  }
+  function createScriptContent(scriptString){
+      var script_tag = document.createElement('script');
+      script_tag.type = 'text/javascript';
+      script_tag.text = scriptString;
+      document.body.appendChild(script_tag);
+  }
+
+  routie({
+      'watch/:id': function(id) {
+	  console.log(id);
+	  var _el = document.getElementById("content-wrapper");
+	  _el.setAttribute("data-fragment","template/watch.html");
+	  _el.setAttribute("data-fragment-json","data/video/" + "1.json");
+			   // id.replace(".html",".json"));
+	  document.body.classList.add("single-video");
+	  fragment.evaluate(_el.parentNode);
+	  ljs.load([
+	      "js/vendor/player/johndyer-mediaelement-89793bc/build/mediaelement-and-player.min.js"
+	  ]);
+	  setTimeout(function(){
+	      var _el = document.getElementById("video-item");
+	      if(_el) {
+	  	  var _video_src_type =
+		      _el.getAttribute("video-src-type");
+		  var _video_src_id =
+		      _el.getAttribute("video-src-id");
+		  switch(_video_src_type) {
+		  case 'thanhnien':
+		      nanoajax.ajax(
+			  {url: "http://125.212.220.167:8080/https://video.thanhnien.vn/a/b-" + _video_src_id +".html"},
+			  function(_code, _resp){
+			      var m =
+   				  _resp.match(/(\<video.+video\>)/);
+     			      _el.parentNode.innerHTML
+				  = m[1];
+			  });
+		      break;
+		  }
+	      }
+	  }, 1000);
+
+      },
+      '*': function() {
+	  console.log("not found");
+	  var _el = document.getElementById("content-wrapper");
+	  _el.setAttribute("data-fragment","template/index.html");
+	  _el.setAttribute("data-fragment-json","data/index.json");
+	  document.body.classList.remove("single-video");
+	  fragment.evaluate(_el.parentNode);
+      }
+  });
+    var loadDeferredStyles = function() {
+        var addStylesNode = document.getElementById("deferred-styles");
+        var replacement = document.createElement("div");
+        replacement.innerHTML = addStylesNode.textContent;
+        document.body.appendChild(replacement)
+        addStylesNode.parentElement.removeChild(addStylesNode);
+    };
+    var raf = requestAnimationFrame || mozRequestAnimationFrame ||
+        webkitRequestAnimationFrame || msRequestAnimationFrame;
+    if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
+    else window.addEventListener('load', loadDeferredStyles);
+</script>
+<script src="js/custom.js"></script>
 </body>
 </html>

@@ -142,7 +142,6 @@
     if (typeof parent === "undefined" || !("querySelectorAll" in parent)) {
       parent = doc;
     }
-
     // Scope contains information for recursively rendering fragments
     var scope = { parent: parent, context: context };
     var fragments = parent.querySelectorAll(
