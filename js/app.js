@@ -15,7 +15,8 @@
 	  console.log(id);
 	  var _el = document.getElementById("content-wrapper");
 	  _el.setAttribute("data-fragment","template/watch.html");
-	  _el.setAttribute("data-fragment-json","data/video/" + "1.json");
+	  _el.setAttribute("data-fragment-json","data/video/" +
+			   "1.json" + "?t=" + (new Date()).getTime());
 			   // id.replace(".html",".json"));
 	  document.body.classList.add("single-video");
 	  fragment.evaluate(_el.parentNode);
@@ -49,7 +50,7 @@
 	  console.log("not found");
 	  var _el = document.getElementById("content-wrapper");
 	  _el.setAttribute("data-fragment","template/index.html");
-	  _el.setAttribute("data-fragment-json","data/index.json");
+	  _el.setAttribute("data-fragment-json","data/index.json" +  "?t=" + (new Date()).getTime());
 	  document.body.classList.remove("single-video");
 	  fragment.evaluate(_el.parentNode);
       }
