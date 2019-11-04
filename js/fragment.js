@@ -68,17 +68,17 @@
 
   var load = function(url, callback) {
     // We'll need something that can easily parse urls
-    var url_parser = doc.createElement("a");
-    url_parser.href = url;
+    // var url_parser = doc.createElement("a");
+    // url_parser.href = url;
 
     // If the resource is located at the same hostname, assume ajax
-    if (url_parser.hostname == win.location.hostname) {
+//    if (url_parser.hostname == win.location.hostname) {
       load_xhr(url, callback);
-    }
+//    }
     // If the resource is located at a different hostname, assume jsonp
-    else {
-      load_jsonp(url, callback, url_parser);
-    }
+    // else {
+    //   load_jsonp(url, callback, url_parser);
+//    }
   };
 
   var render_template = function(element, html, json) {
