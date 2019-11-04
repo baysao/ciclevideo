@@ -145,6 +145,7 @@ $( document ).ready(function() {
             if($('.btn-copy').length)
                 new Clipboard('.btn-copy');
 
+	    
             $('.btn-color-toggle, .mobile-menu-btn-color').on('click', function() {
                 if($('body').hasClass('light')) {
                     $('body').removeClass('light').addClass('dark');

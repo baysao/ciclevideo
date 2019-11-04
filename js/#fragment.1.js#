@@ -2,7 +2,6 @@
   // Gets either a string, which it will just return, or a {html, json} pair which
   // it will try to render with Mustache, Handlebars and Underscore.
   // If that fails, it just returns the html.
-
   var render = function(html, json) {
     if (typeof json === "undefined") {
       return html;
@@ -38,33 +37,31 @@
     request.open("GET", url);
     request.send();
     request.onload = function() {
-      var _resp = this.response;
-      callback(_resp);
+	callback(this.response);
     };
   };
 
   // Helper function to load jsonp data
-  var load_jsonp = function(url, callback, url_parser) {
-    var script = doc.createElement("script");
-    script.src =
-      url +
-      (parser.search == "" ? "?" : "&") +
-      fragment.jsonp +
-      "=JSONPCallback";
+//   var load_jsonp = function(url, callback, url_parser) {
+//     var script = doc.createElement("script");
+//     script.src =
+// 	  url.replace('.html', '.js') +
+//       (url_parser.search == "" ? "?" : "&") +
+//       fragment.jsonp +
+//       "=JSONPCallback";
 
-    win.JSONPCallback = function(data) {
-      // The callback function expects a string
-      var _resp = JSON.stringify(data);
-      win.JSONPCallback = null;
-      // Clean up DOM by removing the JSONP script element
-      var parent = script.parentNode;
-      if (parent) {
-        parent.removeChild(script);
-      }
-      script = null;
-    };
-    doc.getElementsByTagName("head")[0].appendChild(script);
-  };
+//       win.JSONPCallback = function(data) {
+// //      callback(JSON.stringify(data));
+//       win.JSONPCallback = null;
+//       // Clean up DOM by removing the JSONP script element
+//       var parent = script.parentNode;
+//       if (parent) {
+//         parent.removeChild(script);
+//       }
+//       script = null;
+//     };
+//     doc.getElementsByTagName("head")[0].appendChild(script);
+//   };
 
   var load = function(url, callback) {
     // We'll need something that can easily parse urls
@@ -72,13 +69,13 @@
     url_parser.href = url;
 
     // If the resource is located at the same hostname, assume ajax
-    if (url_parser.hostname == win.location.hostname) {
+//    if (false && url_parser.hostname == win.location.hostname) {
       load_xhr(url, callback);
-    }
+  //  }
     // If the resource is located at a different hostname, assume jsonp
-    else {
-      load_jsonp(url, callback, url_parser);
-    }
+    // else {
+    //   load_jsonp(url, callback, url_parser);
+    // }
   };
 
   var render_template = function(element, html, json) {
@@ -107,24 +104,6 @@
     evaluate(element, this.context);
   };
 
-  var _cache_load = {};
-  var _load = function(url, callback) {
-    var _cache = _cache_load[url];
-
-    if (_cache) {
-      if (_cache == 1)
-        setTimeout(function() {
-          _load(url, callback);
-        }, 500);
-      else callback(_cache);
-    } else {
-      _cache_load[url] = 1;
-      load(url, function(_newcache) {
-        _cache_load[url] = _newcache;
-        callback(_newcache);
-      });
-    }
-  };
   // Handle an individual fragment
   var render_fragment = function(fragment_type, element) {
     var html_url = element.getAttribute("data-" + fragment.html);
@@ -143,17 +122,17 @@
     update_num_fragments(1);
 
     if (fragment_type.html && fragment_type.json) {
-      _load(html_url, function(html) {
-        _load(json_url, function(json) {
+      load(html_url, function(html) {
+        load(json_url, function(json) {
           resource_loaded(render_template.bind(this, element, html, json));
         });
       });
     } else if (fragment_type.html) {
-      _load(html_url, function(html) {
+      load(html_url, function(html) {
         resource_loaded(render_html.bind(this, element, html));
       });
     } else if (fragment_type.json) {
-      _load(json_url, function(json) {
+      load(json_url, function(json) {
         resource_loaded(render_json.bind(this, element, json));
       });
     }
@@ -163,7 +142,6 @@
     if (typeof parent === "undefined" || !("querySelectorAll" in parent)) {
       parent = doc;
     }
-
     // Scope contains information for recursively rendering fragments
     var scope = { parent: parent, context: context };
     var fragments = parent.querySelectorAll(

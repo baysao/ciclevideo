@@ -1,0 +1,32 @@
+<div class="cb-header">
+  <div class="row">
+    <div class="col-lg-10 col-sm-10 col-xs-8">
+      <ul class="list-inline">
+        <li>
+          <a href="index.html#" class="color-active">
+            <span class="visible-xs">Featured</span>
+            <span class="hidden-xs">Featured Videos</span>
+          </a>
+        </li>
+        <li><a href="index.html#">New Videos</a></li>
+        <li class="hidden-xs"><a href="index.html#">Recommended For You</a></li>
+      </ul>
+    </div>
+    <div data-fragment="template/index_featured_filter.html"
+	 data-fragment-json="data/index_featured_filter.json"
+	 class="col-lg-2 col-sm-2 col-xs-4">
+      
+    </div>
+  </div>
+</div>
+<div class="cb-content videolist">
+  <div class="row">
+    {{~ it.videolist :item}}
+    <div data-fragment="template/index_featured_item.html"
+	 data-fragment-json="data/video/{{=item.source_type}}/{{= item.id}}.json"
+	 class="col-lg-3 col-sm-6 videoitem">                             
+    </div>
+    {{~}}
+  </div>
+</div>
+
